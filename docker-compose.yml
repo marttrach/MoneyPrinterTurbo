@@ -1,24 +1,25 @@
-version: "3.9"
-
 services:
-  api:
-    working_dir: /MoneyPrinterTurbo
-    command: ["python3", "/MoneyPrinterTurbo/main.py"]
-    ports:
-      - "8080:8080"
-    volumes:
-      - /mnt/NEW_PA9A1_2T/data_pub/moneyprinterturbo:/MoneyPrinterTurbo
-    restart: unless-stopped
-
   webui:
-    working_dir: /MoneyPrinterTurbo
-    command: ["streamlit","run","/MoneyPrinterTurbo/webui/Main.py",
-              "--server.port=8501","--server.address=0.0.0.0",
-              "--browser.gatherUsageStats=False"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: moneyprinterturbo-webui
     ports:
       - "8501:8501"
-    depends_on:
-      - api
+    command: ["streamlit","run","./webui/Main.py",
+              "--server.address=0.0.0.0",
+              "--server.enableCORS=True",
+              "--browser.gatherUsageStats=False"]
+    restart: always
     volumes:
-      - /mnt/NEW_PA9A1_2T/data_pub/moneyprinterturbo:/MoneyPrinterTurbo
-    restart: unless-stopped
+      - /mnt/NEW_PA9A1_2T/data_pub/moneyprinterturbo:/MoneyPrinterTurbo/output
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: moneyprinterturbo-api
+    ports:
+      - "8080:8080"
+    command: ["python3","main.py"]
+    restart: always
