@@ -12,7 +12,7 @@ services:
               "--browser.gatherUsageStats=False"]
     restart: always
     volumes:
-      - /mnt/NEW_PA9A1_2T/data_pub/moneyprinterturbo:/MoneyPrinterTurbo/output
+      - /mnt/NEW_PA9A1_2T/data_pub/moneyprinterturbo:/MoneyPrinterTurbo/storage
 
   api:
     build:
