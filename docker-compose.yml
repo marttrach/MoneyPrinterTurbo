@@ -23,3 +23,5 @@ services:
       - "8080:8080"
     command: ["python3","main.py"]
     restart: always
+    volumes:
+      - /mnt/NEW_PA9A1_2T/data_pub/moneyprinterturbo:/MoneyPrinterTurbo/storage
